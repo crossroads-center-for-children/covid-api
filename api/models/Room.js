@@ -12,4 +12,4 @@ const RoomSchema = new Schema({
   students: [{ type: Schema.Types.ObjectId, ref: "Student" }],
 });
 
-module.exports = mongoose.model("Question", RoomSchema);
+module.exports = mongoose.model("Room", RoomSchema);
