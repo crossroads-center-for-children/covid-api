@@ -1,0 +1,6 @@
+.env
+.eslintignore
+.eslint
+data/
+config/
+.DS_Store
