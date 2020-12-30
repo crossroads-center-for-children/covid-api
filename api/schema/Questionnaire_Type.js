@@ -12,7 +12,7 @@ const {
 } = graphql;
 
 const QuestionnaireType = new GraphQLEnumType({
-  name: "Questionnaire",
+  name: "QuestionnaireType",
   values: {
     parent: { value: 0 },
     clinical: { value: 1 },

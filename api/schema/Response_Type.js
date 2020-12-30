@@ -13,9 +13,7 @@ const {
 
 const { GraphQLDate, GraphQLDateTime } = require("graphql-iso-date");
 
-const User_Type = require("./User_Type");
 const Answer_Type = require("./Answer_Type");
-const Student_Type = require("./Student_Type");
 
 const User = mongoose.model("User");
 const Student = mongoose.model("Student");
@@ -31,10 +29,10 @@ const Response_Type = new GraphQLObjectType({
     date: { type: GraphQLDate },
 
     user: {
-      type: User_Type,
+      type: GraphQLID,
       resolve(parentValue) {
         return User.findById(parentValue.user)
-          .then((user) => user)
+          .then((user) => user.id)
           .catch((err) => null);
       },
     },
@@ -49,10 +47,10 @@ const Response_Type = new GraphQLObjectType({
     },
 
     student: {
-      type: Student_Type,
+      type: GraphQLID,
       resolve(parentValue) {
         return Student.findById(parentValue.student)
-          .then((student) => student)
+          .then((student) => student.id)
           .catch((err) => null);
       },
     },

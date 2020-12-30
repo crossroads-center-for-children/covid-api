@@ -10,8 +10,8 @@ const {
   GraphQLInt,
 } = graphql;
 
-const Response_Type = require("./Response_Type");
-const Question_Type = require("./Question_Type");
+// const Response_Type = require("./Response_Type");
+// const Question_Type = require("./Question_Type");
 
 const Question = mongoose.model("Question");
 
@@ -23,23 +23,23 @@ const Answer_Type = new GraphQLObjectType({
 
     value: { type: GraphQLBoolean },
 
-    response: {
-      type: Response_Type,
-      resolve(parentValue) {
-        return Response.findById(parentValue.response)
-          .then((response) => response)
-          .catch((err) => null);
-      },
-    },
+    // response: {
+    //   type: Response_Type,
+    //   resolve(parentValue) {
+    //     return Response.findById(parentValue.response)
+    //       .then((response) => response)
+    //       .catch((err) => null);
+    //   },
+    // },
 
-    question: {
-      type: Question_Type,
-      resolve(parentValue) {
-        return Question.findById(parentValue.question)
-          .then((question) => question)
-          .catch((err) => null);
-      },
-    },
+    // question: {
+    //   type: Question_Type,
+    //   resolve(parentValue) {
+    //     return Question.findById(parentValue.question)
+    //       .then((question) => question)
+    //       .catch((err) => null);
+    //   },
+    // },
   }),
 });
 

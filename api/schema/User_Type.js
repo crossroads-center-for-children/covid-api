@@ -20,7 +20,7 @@ const Response_Type = require("./Response_Type");
 const User = mongoose.model("User");
 
 const UserType = new GraphQLEnumType({
-  name: "User",
+  name: "UserType",
   values: {
     parent: { value: 0 },
     clinical: { value: 1 },

@@ -12,7 +12,7 @@ const {
 } = graphql;
 
 const QuestionType = new GraphQLEnumType({
-  name: "Question",
+  name: "QuestionType",
   values: {
     date: { value: 0 },
     select: { value: 1 },
@@ -22,10 +22,10 @@ const QuestionType = new GraphQLEnumType({
 });
 
 const Answer_Type = require("./Answer_Type");
-const Questionnaire_Type = require("./Questionnaire_Type");
+// const Questionnaire_Type = require("./Questionnaire_Type");
 
 const Question = mongoose.model("Question");
-const Questionnaire = mongoose.model("Questionnaire");
+// const Questionnaire = mongoose.model("Questionnaire");
 
 const Question_Type = new GraphQLObjectType({
   name: "Question",
@@ -44,14 +44,14 @@ const Question_Type = new GraphQLObjectType({
       },
     },
 
-    questionnaire: {
-      type: Questionnaire_Type,
-      resolve(parentValue) {
-        return Questionnaire.findById(parentValue.questionnaire)
-          .then((questionnaire) => questionnaire)
-          .catch((err) => null);
-      },
-    },
+    // questionnaire: {
+    //   type: Questionnaire_Type,
+    //   resolve(parentValue) {
+    //     return Questionnaire.findById(parentValue.questionnaire)
+    //       .then((questionnaire) => questionnaire)
+    //       .catch((err) => null);
+    //   },
+    // },
 
     type: { type: QuestionType },
   }),
