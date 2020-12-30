@@ -4,6 +4,19 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "graphql-bigint": "^1.0.0"
+    "bcrypt": "^5.0.0",
+    "bcryptjs": "^2.4.3",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.4.0",
+    "graphql-bigint": "^1.0.0",
+    "graphql-iso-date": "^3.6.1",
+    "graphql-type-json": "^0.3.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.9",
+    "mongoose-long": "^0.3.2",
+    "nodemon": "^2.0.6"
+  },
+  "scripts": {
+    "dev": "nodemon index.js"
   }
 }
