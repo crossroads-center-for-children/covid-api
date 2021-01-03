@@ -14,8 +14,8 @@ const {
 const QuestionnaireType = new GraphQLEnumType({
   name: "QuestionnaireType",
   values: {
-    parent: { value: 0 },
-    clinical: { value: 1 },
+    parent: { value: "parent" },
+    clinical: { value: "clinical" },
   },
 });
 
@@ -31,11 +31,11 @@ const Questionnaire_Type = new GraphQLObjectType({
     type: { type: QuestionnaireType },
 
     questions: {
-      type: GraphQLList(Question_Type),
+      type: new GraphQLList(Question_Type),
       resolve(parentValue) {
         return Questionnaire.findById(parentValue.id)
           .populate("questions")
-          .then((user) => user.questions);
+          .then((questionnaire) => questionnaire.questions);
       },
     },
   }),

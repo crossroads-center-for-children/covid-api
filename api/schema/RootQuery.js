@@ -7,8 +7,11 @@ const {
   GraphQLID,
   GraphQLList,
   GraphQLNonNull,
+  GraphQLInt,
   GraphQLBoolean,
 } = graphql;
+
+const { GraphQLJSON } = require("graphql-type-json");
 
 const Answer_Type = require("./Answer_Type");
 const Question_Type = require("./Question_Type");
@@ -49,9 +52,14 @@ const RootQuery = new GraphQLObjectType({
 
     questionnaire: {
       type: Questionnaire_Type,
-      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      resolve(parentValue, { id }) {
-        return Questionnaire.findById(id);
+      args: {
+        id: { type: GraphQLID },
+        where: { type: GraphQLJSON },
+      },
+      resolve(parentValue, { id, where }) {
+        if (id) return Questionnaire.findById(id);
+
+        return Questionnaire.findOne(where);
       },
     },
 
@@ -89,8 +97,12 @@ const RootQuery = new GraphQLObjectType({
 
     user: {
       type: User_Type,
-      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      resolve(parentValue, { id }) {
+      args: {
+        id: { type: GraphQLID },
+        where: { type: GraphQLJSON },
+      },
+      resolve(parentValue, { id, where }) {
+        if (where) return User.findOne(where);
         return User.findById(id);
       },
     },
@@ -118,7 +130,11 @@ const RootQuery = new GraphQLObjectType({
 
     responses: {
       type: new GraphQLList(Response_Type),
-      resolve() {
+      args: {
+        limit: { type: GraphQLInt },
+      },
+      resolve(parentValue, { limit }) {
+        if (limit) return Response.find({}).limit(limit);
         return Response.find({});
       },
     },
@@ -132,7 +148,11 @@ const RootQuery = new GraphQLObjectType({
 
     students: {
       type: new GraphQLList(Student_Type),
-      resolve() {
+      args: {
+        limit: { type: GraphQLInt },
+      },
+      resolve(parentValue, { limit }) {
+        if (limit) return Student.find({}).limit(limit);
         return Student.find({});
       },
     },
@@ -146,7 +166,16 @@ const RootQuery = new GraphQLObjectType({
 
     users: {
       type: new GraphQLList(User_Type),
-      resolve() {
+      args: {
+        limit: { type: GraphQLInt },
+        where: { type: GraphQLJSON },
+      },
+      resolve(parentValue, { limit, where }) {
+        if (where && limit) return User.find(where).limit(limit);
+
+        if (where) return User.find(where);
+
+        if (limit) return User.find({}).limit(limit);
         return User.find({});
       },
     },

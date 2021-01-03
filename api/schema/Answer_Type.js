@@ -32,14 +32,14 @@ const Answer_Type = new GraphQLObjectType({
     //   },
     // },
 
-    // question: {
-    //   type: Question_Type,
-    //   resolve(parentValue) {
-    //     return Question.findById(parentValue.question)
-    //       .then((question) => question)
-    //       .catch((err) => null);
-    //   },
-    // },
+    question: {
+      type: GraphQLString,
+      resolve(parentValue) {
+        return Question.findById(parentValue.question)
+          .then((question) => question.question)
+          .catch((err) => null);
+      },
+    },
   }),
 });
 

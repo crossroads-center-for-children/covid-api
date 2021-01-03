@@ -19,20 +19,28 @@ const User = mongoose.model("User");
 const Student = mongoose.model("Student");
 const Response = mongoose.model("Response");
 
+const ResponseStatus = new GraphQLEnumType({
+  name: "ResponseStatus",
+  values: {
+    pass: { value: "pass" },
+    fail: { value: "fail" },
+  },
+});
+
 const Response_Type = new GraphQLObjectType({
   name: "Response",
 
   fields: () => ({
     id: { type: GraphQLID },
 
-    datetime: { type: GraphQLDateTime },
+    submitted: { type: GraphQLDateTime },
     date: { type: GraphQLDate },
 
     user: {
-      type: GraphQLID,
+      type: GraphQLString,
       resolve(parentValue) {
         return User.findById(parentValue.user)
-          .then((user) => user.id)
+          .then((user) => `${user.firstName} ${user.lastName}`)
           .catch((err) => null);
       },
     },
@@ -47,13 +55,15 @@ const Response_Type = new GraphQLObjectType({
     },
 
     student: {
-      type: GraphQLID,
+      type: GraphQLString,
       resolve(parentValue) {
         return Student.findById(parentValue.student)
-          .then((student) => student.id)
+          .then((student) => `${student.firstName} ${student.lastName}`)
           .catch((err) => null);
       },
     },
+
+    status: { type: ResponseStatus },
   }),
 });
 

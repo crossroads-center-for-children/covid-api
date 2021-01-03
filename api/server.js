@@ -6,9 +6,8 @@ const { graphqlHTTP } = require("express-graphql");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
-const schema = require("./schema/schema");
-
 const db = process.env.MONGODB_URI;
+const schema = require("./schema/schema");
 
 const app = express();
 

@@ -22,9 +22,9 @@ const User = mongoose.model("User");
 const UserType = new GraphQLEnumType({
   name: "UserType",
   values: {
-    parent: { value: 0 },
-    clinical: { value: 1 },
-    admin: { value: 2 },
+    parent: { value: "parent" },
+    clinical: { value: "clinical" },
+    admin: { value: "admin" },
   },
 });
 
@@ -50,7 +50,7 @@ const User_Type = new GraphQLObjectType({
     verified: { type: GraphQLBoolean },
 
     children: {
-      type: GraphQLList(Student_Type),
+      type: new GraphQLList(Student_Type),
       resolve(parentValue) {
         return User.findById(parentValue.id)
           .populate("children")
@@ -59,7 +59,7 @@ const User_Type = new GraphQLObjectType({
     },
 
     responses: {
-      type: GraphQLList(Response_Type),
+      type: new GraphQLList(Response_Type),
       resolve(parentValue) {
         return User.findById(parentValue.id)
           .populate("responses")
@@ -68,6 +68,10 @@ const User_Type = new GraphQLObjectType({
     },
 
     responsesSummary: { type: GraphQLJSON },
+
+    token: { type: GraphQLString },
+
+    value: { type: GraphQLJSON },
   }),
 });
 

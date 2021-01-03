@@ -14,6 +14,7 @@ const {
 const Response_Type = require("./Response_Type");
 
 const Room = mongoose.model("Room");
+const Student = mongoose.model("Student");
 
 const Student_Type = new GraphQLObjectType({
   name: "Student",
@@ -26,21 +27,19 @@ const Student_Type = new GraphQLObjectType({
 
     active: { type: GraphQLBoolean },
 
-    parents: {
-      type: GraphQLList(GraphQLID),
-      resolve(parentValue) {
-        return Student.findById(parentValue.id)
-          .populate("parents")
-          .then((student) => student.parents.map((parent) => parent.id));
-      },
-    },
+    // parents: {
+    //   type: GraphQLList(GraphQLID),
+    //   resolve(parentValue) {
+    //     return Student.findById(parentValue.id)
+    //       .populate("parents")
+    //       .then((student) => student.parents.map((parent) => parent.id));
+    //   },
+    // },
 
     room: {
       type: GraphQLString,
       resolve(parentValue) {
-        return Room.findById(parentValue.room)
-          .then((room) => room.slug)
-          .catch((err) => null);
+        return Room.findById(parentValue.room).then((room) => room.slug);
       },
     },
 

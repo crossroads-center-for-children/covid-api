@@ -14,10 +14,10 @@ const {
 const QuestionType = new GraphQLEnumType({
   name: "QuestionType",
   values: {
-    date: { value: 0 },
-    select: { value: 1 },
-    radio: { value: 2 },
-    checkbox: { value: 3 },
+    date: { value: "date" },
+    select: { value: "select" },
+    radio: { value: "radio" },
+    checkbox: { value: "checkbox" },
   },
 });
 
@@ -36,7 +36,7 @@ const Question_Type = new GraphQLObjectType({
     question: { type: GraphQLString },
 
     answers: {
-      type: GraphQLList(Answer_Type),
+      type: new GraphQLList(Answer_Type),
       resolve(parentValue) {
         return Question.findById(parentValue.id)
           .populate("answers")

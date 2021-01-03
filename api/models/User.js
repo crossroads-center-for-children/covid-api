@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+const {
+  sendActivationEmail,
+  sendForgotPasswordEmail,
+  sendPasswordChangedEmail,
+} = require("../services/email");
 
 require("mongoose-long")(mongoose);
 const {
@@ -13,8 +19,8 @@ mongoose.set("useCreateIndex", true);
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
+  firstName: { type: String },
+  lastName: { type: String },
   fullName: { type: String },
 
   email: { type: String },
@@ -40,7 +46,21 @@ const UserSchema = new Schema({
 UserSchema.pre("save", function (next) {
   const user = this;
 
-  if (!user.isModified("password")) return next();
+  if (user.isNew) {
+    const resetPasswordToken = crypto.randomBytes(64).toString("hex");
+
+    user.resetPasswordToken = resetPasswordToken;
+  }
+
+  next();
+});
+
+UserSchema.pre("save", function (next) {
+  const user = this;
+
+  if (!user.isModified("password")) {
+    return next();
+  }
 
   bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
     if (err) return next(err);
@@ -49,6 +69,7 @@ UserSchema.pre("save", function (next) {
       if (err) return next(err);
 
       user.password = hash;
+
       next();
     });
   });
@@ -58,6 +79,23 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
     cb(null, isMatch);
   });
+};
+
+UserSchema.methods.sendActivationEmail = function () {
+  const user = this;
+
+  sendActivationEmail({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    resetPasswordToken: user.resetPasswordToken,
+  });
+};
+
+UserSchema.methods.addChild = function (studentId) {
+  const children = this.children;
+  children.push(studentId);
+  this.children = children;
 };
 
 module.exports = mongoose.model("User", UserSchema);
