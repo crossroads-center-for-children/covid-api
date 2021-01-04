@@ -163,7 +163,7 @@ const resetPassword = async ({ resetPasswordToken, password }) => {
 
     const token = jwt.sign({ id: user.id }, keys);
 
-    return { success: true, token, user };
+    return user;
   } catch (err) {
     return { success: false, err };
   }
