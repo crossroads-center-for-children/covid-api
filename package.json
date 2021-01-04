@@ -18,7 +18,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.9",
     "mongoose-long": "^0.3.2",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "validator": "^13.5.2"
   },
   "scripts": {
     "dev": "nodemon index.js",
