@@ -47,7 +47,7 @@ const createForgotPasswordEmail = ({
   return {
     to: email,
     from: "matt.ramotar@jhu.edu",
-    subject: "Link To Reset Your Crossroads Password",
+    subject: "Reset Your Crossroads Password",
     text: `
     Hi ${firstName} ${lastName},
 
@@ -55,7 +55,7 @@ const createForgotPasswordEmail = ({
 
     All you need to do is click on the link below and enter your new password in the box provided:
 
-    ${root}/reset/${resetPasswordToken}
+    ${root}/p/reset/${resetPasswordToken}
 
     If you have any questions, please email matt.ramotar@jhu.edu.
     `,
@@ -64,11 +64,9 @@ const createForgotPasswordEmail = ({
     <br></br>
     <p>We've received your request to reset your password.</p>
     <br></br>
-    <p>All you need to do is click on the link below and enter your new password in the box provided:</p>
+    <p>All you need to do is click on this <span><a href=${root}/p/reset/${resetPasswordToken}>link</a></span> and enter your new password in the box provided.</p>
     <br></br>
-    <p>${root}/reset/${resetPasswordToken}</p>
-    <br></br>
-    <p>If you have any questions, please email matt.ramotar@jhu.edu.</p>
+    <p>If you have any questions, please contact our <a href=mailto:matt.ramotar@jhu.edu>support team</a>.</p>
     <br></br>
     <p>Best,</p>
     <p>Crossroads</p>
@@ -96,7 +94,7 @@ const createPasswordChangedEmail = ({ firstName, lastName, email }) => {
     <br></br>
     <p>The password to your Crossroads account was just changed.</p>
     <br></br>
-    <p>If you did not request this change, please email matt.ramotar@jhu.edu to get help securing your account.</p>
+    <p>If you did not request this change, please contact our <a href=mailto:matt.ramotar@jhu.edu>support team</a> to get help securing your account.</p>
     <br></br>
     <p>Best,</p>
     <p>Crossroads</p>`,
@@ -116,10 +114,7 @@ const sendActivationEmail = ({
         lastName,
         email,
         resetPasswordToken,
-        root:
-          process.env.NODE_ENV === "production"
-            ? "https://crossroads-center.herokuapp.com"
-            : "http://localhost:3000",
+        root: "https://crossroads-center.herokuapp.com",
       })
     )
     .then(() => console.log("Email sent."))
@@ -139,10 +134,7 @@ const sendForgotPasswordEmail = async ({
         lastName,
         email,
         resetPasswordToken,
-        root:
-          process.env.NODE_ENV === "production"
-            ? "https://crossroads-center.herokuapp.com"
-            : "http://localhost:3000",
+        root: "https://crossroads-center.herokuapp.com",
       })
     );
 

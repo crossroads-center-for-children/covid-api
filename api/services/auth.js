@@ -3,7 +3,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-const { sendPasswordChangedEmail } = require("./email");
+const {
+  sendPasswordChangedEmail,
+  sendForgotPasswordEmail,
+} = require("./email");
 
 const User = mongoose.model("User");
 
@@ -229,7 +232,7 @@ const forgotPassword = async ({ email }) => {
       resetPasswordToken,
     });
 
-    return { success: true };
+    return user;
   } catch (err) {
     return { success: false, err };
   }
