@@ -103,7 +103,7 @@ const createPasswordChangedEmail = ({ firstName, lastName, email }) => {
 
 const createFailureEmail = ({ submitted, date, user, answers, student }) => {
   return {
-    to: "mattwramotar@gmail.com",
+    to: "kellyy@crossroadcenter.org",
     from: "support@crossroadcenter.org",
     subject: student
       ? `${student.firstName} ${
