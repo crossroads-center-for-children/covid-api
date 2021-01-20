@@ -1,15 +1,20 @@
 const mongoose = require("mongoose");
 
+const { updateUser } = require("./User");
+
 const Response = mongoose.model("Response");
 
 const createResponse = async ({ date, user, student }) => {
   try {
+    console.log(user);
     const response = await Response.create({
       submitted: new Date(),
       date: new Date(date),
       user,
       student,
     });
+
+    await updateUser({ userId: user, update: { response } });
 
     return response;
   } catch (err) {
