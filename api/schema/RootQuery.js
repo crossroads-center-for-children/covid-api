@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const graphql = require("graphql");
+const { endOfDay, startOfDay } = require("date-fns");
 
 const {
   GraphQLObjectType,
@@ -132,9 +133,20 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(Response_Type),
       args: {
         limit: { type: GraphQLInt },
+        where: { type: GraphQLJSON },
       },
-      resolve(parentValue, { limit }) {
+      resolve(parentValue, { limit, where }) {
         if (limit) return Response.find({}).limit(limit);
+
+        if (where.date === "today") {
+          return Response.find({
+            date: {
+              $gte: startOfDay(new Date()),
+              $lte: endOfDay(new Date()),
+            },
+          });
+        }
+
         return Response.find({});
       },
     },
