@@ -10,7 +10,7 @@ const createActivationEmail = ({
 }) => {
   return {
     to: email,
-    from: "matt.ramotar@jhu.edu",
+    from: "support@crossroadcenter.org",
     subject: "Crossroads Account Activation",
     text: `Hi ${firstName} ${lastName},
 
@@ -18,7 +18,7 @@ const createActivationEmail = ({
 
     Please visit this link to set your password: ${root}/p/set/${resetPasswordToken}
 
-    If you have any questions, please email matt.ramotar@jhu.edu.
+    If you have any questions, please email support@crossroadcenter.org.
 
     Best,
     Crossroads
@@ -29,7 +29,7 @@ const createActivationEmail = ({
     <br></br>
     <p>Please visit this <span><a href=${root}/p/set/${resetPasswordToken}>link</a></span> to set your password.</p>
     <br></br>
-    <p>If you have any questions, please contact our <a href=mailto:matt.ramotar@jhu.edu>support team</a>.</p>
+    <p>If you have any questions, please contact our <a href=mailto:support@crossroadcenter.org>support team</a>.</p>
     <br></br>
     <p>Best,</p>
     <p>Crossroads</p>
@@ -46,7 +46,7 @@ const createForgotPasswordEmail = ({
 }) => {
   return {
     to: email,
-    from: "matt.ramotar@jhu.edu",
+    from: "support@crossroadcenter.org",
     subject: "Reset Your Crossroads Password",
     text: `
     Hi ${firstName} ${lastName},
@@ -57,7 +57,7 @@ const createForgotPasswordEmail = ({
 
     ${root}/p/reset/${resetPasswordToken}
 
-    If you have any questions, please email matt.ramotar@jhu.edu.
+    If you have any questions, please email support@crossroadcenter.org.
     `,
     html: `
     <p>Hi ${firstName} ${lastName},</p>
@@ -66,7 +66,7 @@ const createForgotPasswordEmail = ({
     <br></br>
     <p>All you need to do is click on this <span><a href=${root}/p/reset/${resetPasswordToken}>link</a></span> and enter your new password in the box provided.</p>
     <br></br>
-    <p>If you have any questions, please contact our <a href=mailto:matt.ramotar@jhu.edu>support team</a>.</p>
+    <p>If you have any questions, please contact our <a href=mailto:support@crossroadcenter.org>support team</a>.</p>
     <br></br>
     <p>Best,</p>
     <p>Crossroads</p>
@@ -77,14 +77,14 @@ const createForgotPasswordEmail = ({
 const createPasswordChangedEmail = ({ firstName, lastName, email }) => {
   return {
     to: email,
-    from: "matt.ramotar@jhu.edu",
+    from: "support@crossroadcenter.org",
     subject: "Your Crossroads Password Was Changed",
     text: `
     Hi ${firstName} ${lastName},
 
     The password to your Crossroads account was just changed.
 
-    If you did not request this change, please email matt.ramotar@jhu.edu to get help securing your account.
+    If you did not request this change, please email support@crossroadcenter.org to get help securing your account.
 
     Best,
     Crossroads
@@ -94,10 +94,82 @@ const createPasswordChangedEmail = ({ firstName, lastName, email }) => {
     <br></br>
     <p>The password to your Crossroads account was just changed.</p>
     <br></br>
-    <p>If you did not request this change, please contact our <a href=mailto:matt.ramotar@jhu.edu>support team</a> to get help securing your account.</p>
+    <p>If you did not request this change, please contact our <a href=mailto:support@crossroadcenter.org>support team</a> to get help securing your account.</p>
     <br></br>
     <p>Best,</p>
     <p>Crossroads</p>`,
+  };
+};
+
+const createFailureEmail = ({ submitted, date, user, answers, student }) => {
+  return {
+    to: "mattwramotar@gmail.com",
+    from: "support@crossroadcenter.org",
+    subject: student
+      ? `${student.firstName} ${
+          student.lastName
+        } Failed Screener for ${new Date(date).toLocaleDateString()}`
+      : `${user.firstName} ${user.lastName} Failed Screener for ${new Date(
+          date
+        ).toLocaleDateString()}`,
+    text: student
+      ? `
+      Hi Kelly,
+
+      ${student.firstName} ${student.lastName} failed their COVID-19 screener.
+
+      SUBMITTED ON: ${submitted}
+
+      SUBMITTED FOR: ${date}
+
+      SUBMITTED BY: ${user.firstName} ${user.lastName}, ${user.email}, ${
+          user.phone
+        }
+
+      RESPONSES:
+
+      ${answers.map(
+        (answer) => `• ${answer.question.question}: ${answer.value}`
+      )}
+
+      Best,
+      Matt
+      `
+      : `
+    Hi Kelly,
+
+    ${user.firstName} ${
+          user.lastName
+        } just failed their COVID-19 screener for ${new Date(
+          date
+        ).toLocaleDateString()}.
+
+    Below are the ${
+      answers.filter(
+        (answer) =>
+          answer.question.question !==
+            "I agree that the above information is true and correct to the best of my knowledge." &&
+          answer.value === true
+      ).length
+    } questions ${user.firstName} failed:
+
+      ${answers
+        .filter(
+          (answer) =>
+            answer.question.question !==
+              "I agree that the above information is true and correct to the best of my knowledge." &&
+            answer.value === true
+        )
+        .map(
+          (answer) => `
+      • ${answer.question.question}
+      `
+        )
+        .join("")}
+
+    Best,
+    Matt
+`,
   };
 };
 
@@ -156,8 +228,27 @@ const sendPasswordChangedEmail = async ({ firstName, lastName, email }) => {
   }
 };
 
+const sendFailureEmail = async ({
+  submitted,
+  date,
+  user,
+  answers,
+  student,
+}) => {
+  try {
+    await sgMail.send(
+      createFailureEmail({ submitted, date, user, answers, student })
+    );
+
+    return { success: true };
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   sendActivationEmail,
   sendForgotPasswordEmail,
   sendPasswordChangedEmail,
+  sendFailureEmail,
 };
