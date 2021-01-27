@@ -10,7 +10,7 @@ const createActivationEmail = ({
 }) => {
   return {
     to: email,
-    from: "support@crossroadcenter.org",
+    from: "support@crossroadscenter.app",
     subject: "Crossroads Account Activation",
     text: `Hi ${firstName} ${lastName},
 
@@ -18,7 +18,7 @@ const createActivationEmail = ({
 
     Please visit this link to set your password: ${root}/p/set/${resetPasswordToken}
 
-    If you have any questions, please email support@crossroadcenter.org.
+    If you have any questions, please email support@crossroadscenter.app.
 
     Best,
     Crossroads
@@ -29,7 +29,7 @@ const createActivationEmail = ({
     <br></br>
     <p>Please visit this <span><a href=${root}/p/set/${resetPasswordToken}>link</a></span> to set your password.</p>
     <br></br>
-    <p>If you have any questions, please contact our <a href=mailto:support@crossroadcenter.org>support team</a>.</p>
+    <p>If you have any questions, please contact our <a href=mailto:support@crossroadscenter.app>support team</a>.</p>
     <br></br>
     <p>Best,</p>
     <p>Crossroads</p>
@@ -46,7 +46,7 @@ const createForgotPasswordEmail = ({
 }) => {
   return {
     to: email,
-    from: "support@crossroadcenter.org",
+    from: "support@crossroadscenter.app",
     subject: "Reset Your Crossroads Password",
     text: `
     Hi ${firstName} ${lastName},
@@ -57,7 +57,7 @@ const createForgotPasswordEmail = ({
 
     ${root}/p/reset/${resetPasswordToken}
 
-    If you have any questions, please email support@crossroadcenter.org.
+    If you have any questions, please email support@crossroadscenter.app.
     `,
     html: `
     <p>Hi ${firstName} ${lastName},</p>
@@ -66,7 +66,7 @@ const createForgotPasswordEmail = ({
     <br></br>
     <p>All you need to do is click on this <span><a href=${root}/p/reset/${resetPasswordToken}>link</a></span> and enter your new password in the box provided.</p>
     <br></br>
-    <p>If you have any questions, please contact our <a href=mailto:support@crossroadcenter.org>support team</a>.</p>
+    <p>If you have any questions, please contact our <a href=mailto:support@crossroadscenter.app>support team</a>.</p>
     <br></br>
     <p>Best,</p>
     <p>Crossroads</p>
@@ -77,14 +77,14 @@ const createForgotPasswordEmail = ({
 const createPasswordChangedEmail = ({ firstName, lastName, email }) => {
   return {
     to: email,
-    from: "support@crossroadcenter.org",
+    from: "support@crossroadscenter.app",
     subject: "Your Crossroads Password Was Changed",
     text: `
     Hi ${firstName} ${lastName},
 
     The password to your Crossroads account was just changed.
 
-    If you did not request this change, please email support@crossroadcenter.org to get help securing your account.
+    If you did not request this change, please email support@crossroadscenter.app to get help securing your account.
 
     Best,
     Crossroads
@@ -94,7 +94,7 @@ const createPasswordChangedEmail = ({ firstName, lastName, email }) => {
     <br></br>
     <p>The password to your Crossroads account was just changed.</p>
     <br></br>
-    <p>If you did not request this change, please contact our <a href=mailto:support@crossroadcenter.org>support team</a> to get help securing your account.</p>
+    <p>If you did not request this change, please contact our <a href=mailto:support@crossroadscenter.app>support team</a> to get help securing your account.</p>
     <br></br>
     <p>Best,</p>
     <p>Crossroads</p>`,
@@ -104,7 +104,7 @@ const createPasswordChangedEmail = ({ firstName, lastName, email }) => {
 const createFailureEmail = ({ submitted, date, user, answers, student }) => {
   return {
     to: "kellyy@crossroadcenter.org",
-    from: "support@crossroadcenter.org",
+    from: "support@crossroadscenter.app",
     subject: student
       ? `${student.firstName} ${
           student.lastName
