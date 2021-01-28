@@ -17,11 +17,14 @@ const validateLoginInput = require("../validation/login");
 const login = async (data) => {
   try {
     const { message, isValid } = validateLoginInput(data);
+
     if (!isValid) throw new Error(message);
 
     const { email, password } = data;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({
+      email: { $regex: new RegExp(email, "i") },
+    });
 
     if (!user) throw new Error("There are no users with that email address");
 
@@ -58,7 +61,7 @@ const login = async (data) => {
       value: { success: true },
     };
   } catch (err) {
-    return { value: { success: false, err } };
+    return { value: { success: false, message: err.message } };
   }
 };
 
