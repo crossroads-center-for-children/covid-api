@@ -134,9 +134,14 @@ const RootQuery = new GraphQLObjectType({
       args: {
         limit: { type: GraphQLInt },
         where: { type: GraphQLJSON },
+        page: { type: GraphQLInt },
       },
-      resolve(parentValue, { limit, where }) {
-        if (limit) return Response.find({}).limit(limit);
+      resolve(parentValue, { limit, where, page }) {
+        if (limit)
+          return Response.find({})
+            .skip(limit * (page - 1))
+            .sort({ date: -1 })
+            .limit(limit);
 
         if (where.date === "today") {
           return Response.find({
@@ -162,9 +167,15 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(Student_Type),
       args: {
         limit: { type: GraphQLInt },
+        page: { type: GraphQLInt },
       },
-      resolve(parentValue, { limit }) {
-        if (limit) return Student.find({}).limit(limit);
+      resolve(parentValue, { limit, page }) {
+        if (limit) {
+          return Student.find({})
+            .skip(limit * (page - 1))
+            .sort({ lastName: 1 })
+            .limit(limit);
+        }
         return Student.find({});
       },
     },
