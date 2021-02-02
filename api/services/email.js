@@ -10,6 +10,7 @@ const createActivationEmail = ({
 }) => {
   return {
     to: email,
+    cc: "support@crossroadscenter.app",
     from: "support@crossroadscenter.app",
     subject: "Crossroads Account Activation",
     text: `Hi ${firstName} ${lastName},
@@ -47,6 +48,7 @@ const createForgotPasswordEmail = ({
   return {
     to: email,
     from: "support@crossroadscenter.app",
+    cc: "support@crossroadscenter.app",
     subject: "Reset Your Crossroads Password",
     text: `
     Hi ${firstName} ${lastName},
@@ -78,6 +80,7 @@ const createPasswordChangedEmail = ({ firstName, lastName, email }) => {
   return {
     to: email,
     from: "support@crossroadscenter.app",
+    cc: "support@crossroadscenter.app",
     subject: "Your Crossroads Password Was Changed",
     text: `
     Hi ${firstName} ${lastName},
@@ -104,6 +107,7 @@ const createPasswordChangedEmail = ({ firstName, lastName, email }) => {
 const createFailureEmail = ({ submitted, date, user, answers, student }) => {
   return {
     to: "kellyy@crossroadcenter.org",
+    cc: "support@crossroadscenter.app",
     from: "support@crossroadscenter.app",
     subject: student
       ? `${student.firstName} ${
