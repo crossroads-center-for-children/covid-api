@@ -28,9 +28,9 @@ const login = async (data) => {
 
     if (!user) throw new Error("There are no users with that email address");
 
-    user.comparePassword(password, function (err, isMatch) {
-      if (err) throw new Error("Password is invalid.");
-    });
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) throw new Error("Password is invalid");
 
     const token = jwt.sign({ id: user.id }, keys);
 
@@ -61,7 +61,9 @@ const login = async (data) => {
       value: { success: true },
     };
   } catch (err) {
-    return { value: { success: false, message: err.message } };
+    return {
+      value: { success: false, message: err.message },
+    };
   }
 };
 
