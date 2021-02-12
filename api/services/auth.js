@@ -183,6 +183,8 @@ const setPassword = async ({ resetPasswordToken, password }) => {
 
     user.resetPasswordToken = "";
 
+    user.verified = true;
+
     await user.save();
 
     const token = jwt.sign({ id: user.id }, keys);
