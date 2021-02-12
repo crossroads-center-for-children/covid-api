@@ -87,6 +87,16 @@ const mutation = new GraphQLObjectType({
       },
     },
 
+    markAsVerified: {
+      type: User_Type,
+      args: {
+        userId: { type: GraphQLID },
+      },
+      resolve(_, args) {
+        return UserService.markAsVerified(args);
+      },
+    },
+
     forgotPassword: {
       type: User_Type,
       args: {
