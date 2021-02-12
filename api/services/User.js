@@ -2,6 +2,16 @@ const mongoose = require("mongoose");
 
 const User = mongoose.model("User");
 
+const markAsVerified = async ({ userId }) => {
+  const user = await User.findById(userId);
+
+  if (user) {
+    user.verified = true;
+  }
+
+  return user;
+};
+
 const updateUser = async ({ userId, update: { response } }) => {
   try {
     console.log("userId", userId);
@@ -20,5 +30,6 @@ const updateUser = async ({ userId, update: { response } }) => {
 };
 
 module.exports = {
+  markAsVerified,
   updateUser,
 };
