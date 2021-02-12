@@ -223,7 +223,10 @@ const setPassword = async ({ resetPasswordToken, password }) => {
 
 const forgotPassword = async ({ email }) => {
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({
+      email: { $regex: new RegExp(email, "i") },
+    });
+
     if (!user) throw new Error("There are no users with that email address.");
 
     const resetPasswordToken = crypto.randomBytes(64).toString("hex");
